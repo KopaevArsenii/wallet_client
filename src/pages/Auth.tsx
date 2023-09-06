@@ -1,11 +1,17 @@
 import { FC, useState } from "react"
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { setTokenToLocalstorage } from "../helpers/localStorage.helper";
 import { AuthService } from "../services/auth.service";
+import { useAppDispatch } from "../store/hooks";
+import { login } from "../store/user/userSlice";
 
 const Auth: FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isLogin, setIsLogin] = useState<boolean>(true);
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const registrationHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
@@ -21,7 +27,21 @@ const Auth: FC = () => {
     }
   }
 
-  const LoginHandler = () => {}
+  const LoginHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+    try {
+      event.preventDefault()
+      const data = await AuthService.login({ email, password })
+      if (data) {
+        setTokenToLocalstorage('token', data.token)
+        dispatch(login(data.token))
+        toast.success('You loggined in')
+        navigate('/')
+      }
+    } catch (e: any) {
+      const error = e.response?.data.message
+      toast.error(error.toString())
+    }
+  }
   
   return (
     <div className='mt-40 flex flex-col justify-center items-center bg-slate-900 text-white'>
