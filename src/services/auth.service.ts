@@ -10,5 +10,8 @@ export const AuthService = {
         const { data } = await instance.post<IUser>('auth/login', userData)
         return data;
     },
-    async getMe() {}
+    async getProfile(): Promise<IUser | undefined> {
+        const { data } = await instance.get<IUser>('auth/profile')
+        if (data) return data
+    }
 }

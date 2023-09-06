@@ -16,11 +16,11 @@ export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        login: (state, action: PayloadAction<string>) => {
+        login: (state, action: PayloadAction<any>) => { //Кривая типизация
             state.token = action.payload
             state.isAuth = true
         },
-        logout: (state, action) => {
+        logout: (state) => {
             state.isAuth = false
             state.token = ''
         }
