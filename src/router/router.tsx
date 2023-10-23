@@ -1,6 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import Auth from "../pages/Auth";
-import Categories from "../pages/Categories";
+import Categories, {
+    categoriesActions,
+    categoryLoader,
+} from "../pages/Categories";
 import ErrorPage from "../pages/ErrorPage";
 import Home from "../pages/Home";
 import Layout from "../pages/Layout";
@@ -9,7 +12,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 
 export const router = createBrowserRouter([
     {
-        path: '/',
+        path: "/",
         element: <Layout />,
         errorElement: <ErrorPage />,
         children: [
@@ -18,23 +21,27 @@ export const router = createBrowserRouter([
                 element: <Home />,
             },
             {
-                path: 'transactions',
-                element:
+                path: "transactions",
+                element: (
                     <ProtectedRoute>
                         <Transactions />
                     </ProtectedRoute>
-            }, 
+                ),
+            },
             {
-                path: 'categories',
-                element:
+                path: "categories",
+                action: categoriesActions,
+                loader: categoryLoader,
+                element: (
                     <ProtectedRoute>
                         <Categories />
                     </ProtectedRoute>
+                ),
             },
             {
-                path: 'auth',
-                element: <Auth />
-            }
-        ]
+                path: "auth",
+                element: <Auth />,
+            },
+        ],
     },
-])
+]);
