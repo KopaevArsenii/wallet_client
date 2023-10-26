@@ -7,7 +7,10 @@ import Categories, {
 import ErrorPage from "../pages/ErrorPage";
 import Home from "../pages/Home";
 import Layout from "../pages/Layout";
-import Transactions from "../pages/Transactions";
+import Transactions, {
+    transactionAction,
+    transactionLoader,
+} from "../pages/Transactions";
 import ProtectedRoute from "../components/ProtectedRoute";
 
 export const router = createBrowserRouter([
@@ -22,6 +25,8 @@ export const router = createBrowserRouter([
             },
             {
                 path: "transactions",
+                loader: transactionLoader,
+                action: transactionAction,
                 element: (
                     <ProtectedRoute>
                         <Transactions />
